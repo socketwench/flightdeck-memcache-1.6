@@ -1,0 +1,13 @@
+---
+- hosts: memcache
+  tasks:
+    - name: Deploy key scripts.
+      template:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        owner: "memcache"
+        group: "memcache"
+        mode: "u=rwx,g=rwx,o="
+      loop:
+        - src: "templates/memcache-foreground.sh.j2"
+          dest: "/etc/memcache/memcache-foreground.sh"

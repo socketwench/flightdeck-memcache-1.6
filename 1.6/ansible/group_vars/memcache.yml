@@ -1,0 +1,57 @@
+---
+flighdeck_motd_name: memcache 6.6
+
+flightdeck_groups:
+  - name: "memcache"
+
+flightdeck_users:
+  - name: "memcache"
+    group: "memcache"
+    home: "/home/memcache"
+
+flightdeck_root_prompt: '\u@flightdeck-memcache-1.6:\w# '
+flightdeck_user_prompt: '\u@flightdeck-memcache-1.6:\w$ '
+
+flightdeck_motd_links:
+  - name: 'Code & docs'
+    url: 'https://github.com/ten7/flightdeck-memcache-1.6'
+  - name: ' Learn more'
+    url: 'https://flightdeck.ten7.com/'
+
+flightdeck_init_commands: |
+  if [ -n "${FLIGHTDECK_CONFIG}" ]; then
+    config_file=$(mktemp "${TMPDIR:-/tmp/}$(basename $0).XXXXXXXXXXXX")
+    echo "$FLIGHTDECK_CONFIG" | base64 -d > $config_file
+    ansible-playbook -i /ansible/inventories/all.ini -e "@${config_file}" /ansible/init.yml
+  elif [ -f "${FLIGHTDECK_CONFIG_FILE}" ]; then
+    ansible-playbook -i /ansible/inventories/all.ini -e "@${FLIGHTDECK_CONFIG_FILE}" /ansible/init.yml
+  elif [ -f "/config/memcache/flightdeck-memcache.yml" ]; then
+    ansible-playbook -i /ansible/inventories/all.ini -e "@/config/memcache/flightdeck-memcache.yml" /ansible/init.yml
+  elif [ -f "/config/memcache/flight-deck-memcache.yml" ]; then
+    ansible-playbook -i /ansible/inventories/all.ini -e "@/config/memcache/flight-deck-memcache.yml" /ansible/init.yml
+  else
+    ansible-playbook -i /ansible/inventories/all.ini /ansible/init.yml
+  fi
+
+flightdeck_run_commands: |
+  if [ -n "${FLIGHTDECK_CONFIG}" ]; then
+    config_file=$(mktemp "${TMPDIR:-/tmp/}$(basename $0).XXXXXXXXXXXX")
+    echo "$FLIGHTDECK_CONFIG" | base64 -d > $config_file
+    ansible-playbook -i /ansible/inventories/all.ini -e "@${config_file}" /ansible/run.yml
+  elif [ -f "${FLIGHTDECK_CONFIG_FILE}" ]; then
+    ansible-playbook -i /ansible/inventories/all.ini -e "@${FLIGHTDECK_CONFIG_FILE}" /ansible/run.yml
+  elif [ -f "/config/memcache/flightdeck-memcache.yml" ]; then
+    ansible-playbook -i /ansible/inventories/all.ini -e "@/config/memcache/flightdeck-memcache.yml" /ansible/run.yml
+  elif [ -f "/config/memcache/flight-deck-memcache.yml" ]; then
+    ansible-playbook -i /ansible/inventories/all.ini -e "@/config/memcache/flight-deck-memcache.yml" /ansible/run.yml
+  else
+    ansible-playbook -i /ansible/inventories/all.ini /ansible/run.yml
+  fi
+
+flightdeck_path:
+  - '/etc/memcache'
+
+flightdeck_memcache:
+  port: "11211"
+  memory: "64"
+  threads: "4"

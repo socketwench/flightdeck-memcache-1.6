@@ -1,0 +1,12 @@
+#!/bin/bash
+set -me
+
+SCRIPT_NAME=`basename "$0"`
+
+echo "$SCRIPT_NAME: Starting Varnish in the foreground..."
+
+memcached {% if (flightdeck_debug | default(false) == true) or (lookup('env', 'ANSIBLE_VERBOSITY') | default(false, true)) %}-vvvv{% endif %} \
+  --memory-limit={{ flightdeck_memcache.memory | default('64') }} \
+  {% if flightdeck_memcache.file | default('') != '' %}--memory-file={{ flightdeck_memcache.file }}{% endif %} \
+  --port={{ flightdeck_memcache.port | default('11211') }} \
+  --threads={{ flightdeck_memcache.threads | default('4') }}
