@@ -12,6 +12,11 @@
         - "memcached"
       notify:
         - clear apk cache
+    - name: Install telnet from testing repo.
+      shell: >
+        apk add -U --no-cache -X http://dl-cdn.alpinelinux.org/alpine/edge/testing inetutils-telnet
+      notify:
+        - clear apk cache
     - name: Ensure key directories are owned by varnish
       file:
         path: "{{ item }}"
