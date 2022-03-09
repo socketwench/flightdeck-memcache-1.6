@@ -1,5 +1,5 @@
 ---
-flighdeck_motd_name: memcache 6.6
+flighdeck_motd_name: memcache 1.6
 
 flightdeck_groups:
   - name: "memcache"

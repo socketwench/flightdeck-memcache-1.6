@@ -3,7 +3,7 @@ set -me
 
 SCRIPT_NAME=`basename "$0"`
 
-echo "$SCRIPT_NAME: Starting Varnish in the foreground..."
+echo "$SCRIPT_NAME: Starting Memcache in the foreground..."
 
 memcached {% if (flightdeck_debug | default(false) == true) or (lookup('env', 'ANSIBLE_VERBOSITY') | default(false, true)) %}-vvvv{% endif %} \
   --memory-limit={{ flightdeck_memcache.memory | default('64') }} \
